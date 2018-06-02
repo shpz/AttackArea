@@ -46,6 +46,11 @@ cc.Class({
 
         this.normalizedMaxRadius = this.maxRadius / this.node.width;
         this.normalizedMinRadius = this.minRadius / this.node.width;
+        this.normalizedColor = { 
+            x: this.color.r / 255, 
+            y: this.color.g / 255, 
+            z: this.color.b / 255 
+        };
         this.realAngle = this.sectorAngle == 180 ? 179 / 2 : this.sectorAngle / 2;
 
         this.vertStr = VertDefault;
@@ -101,7 +106,7 @@ cc.Class({
         else {
             sgNode.setShaderProgram(program);
         }
-    
+
     },
 
     updateArea() {
@@ -114,7 +119,8 @@ cc.Class({
                 state.setUniformFloat('saturation', this.saturation);
                 state.setUniformFloat('maxRadius', this.normalizedMaxRadius);
                 state.setUniformFloat('minRadius', this.normalizedMinRadius);
-                state.setUniformVec3('areaColor', this.color);
+
+                state.setUniformVec3('areaColor', this.normalizedColor);
 
                 if (this.areaType === AreaType.SECTOR) {
                     state.setUniformVec2('forward', this.forward);
@@ -130,13 +136,13 @@ cc.Class({
                 this.program.setUniformLocationWith1f(saturation, this.saturation);
                 this.program.setUniformLocationWith1f(maxRadius, this.normalizedMaxRadius);
                 this.program.setUniformLocationWith1f(minRadius, this.normalizedMinRadius);
-                this.program.setUniformLocationWith3f(areaColor, this.color.r, this.color.g, this.color.b);
+                this.program.setUniformLocationWith3f(areaColor, this.normalizedColor.x, this.normalizedColor.y, this.normalizedColor.z);
 
                 if (this.areaType === AreaType.SECTOR) {
                     var forward = this.program.getUniformLocationForName('forward');
                     var sectorAngle = this.program.getUniformLocationForName('sectorAngle');
-                    
-                    this.program.setUniformLocationWith2f(forward, -this.forward.x, this.forward.y);
+
+                    this.program.setUniformLocationWith2f(forward, this.forward.x, this.forward.y);
                     this.program.setUniformLocationWith1f(sectorAngle, this.realAngle);
                 }
 

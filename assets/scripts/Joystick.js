@@ -40,12 +40,16 @@ cc.Class({
     },
 
     calculateRadian(v2, baseline) {
-        var dotProduct = v2.dot(baseline);
-        var moldA = Math.sqrt(v2.dot(v2));
-        var moldB = Math.sqrt(baseline.dot(baseline));
+        var dotProduct = this.dot(v2, baseline);
+        var moldA = Math.sqrt(this.dot(v2, v2));
+        var moldB = Math.sqrt(this.dot(baseline, baseline));
         var radian = Math.acos(dotProduct / (moldA * moldB));
 
         return v2.y > 0 ? radian : radian * -1;
+    },
+
+    dot(va, vb) {
+        return va.x * vb.x + va.y * vb.y;
     },
 
     calculateForward(radian) {
@@ -57,7 +61,7 @@ cc.Class({
     },
 
     setForward(x, y) {
-        window.heroForward.x = x;
+        window.heroForward.x = -x;
         window.heroForward.y = y;
     }
 

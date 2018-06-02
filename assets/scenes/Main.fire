@@ -257,14 +257,14 @@
     "areaType": 1,
     "color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 0,
-      "b": 0,
+      "r": 197,
+      "g": 189,
+      "b": 255,
       "a": 255
     },
     "saturation": 1,
-    "maxRadius": 200,
-    "minRadius": 30,
+    "maxRadius": 250,
+    "minRadius": 20,
     "sectorAngle": 90
   },
   {
