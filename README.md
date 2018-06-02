@@ -18,4 +18,6 @@
 
 ![image](http://forum.cocos.com/uploads/default/original/3X/3/3/3386ca8fcc5b8edb539158184cf0e7e0bd65498a.png)
 
+![image](http://forum.cocos.com/uploads/default/original/3X/a/7/a78630ee76fb4b57c2f8fe2a3ad379ece325ac62.gif)
+
 作者：我是一只傻狍子（shpz）
