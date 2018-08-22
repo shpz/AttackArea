@@ -1,3 +1,6 @@
+# 支持我
+打开支付宝首页搜索“1517716”，即可领红包
+
 # AttackArea
 一个基于 OpenGL 和 Creator 的攻击范围绘制Demo。
 使用 GLSL 和 JavaScript 编写
