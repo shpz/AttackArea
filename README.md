@@ -1,5 +1,8 @@
 # 支持我
-打开支付宝首页搜索“1517716”，即可领红包
+
+![image](https://raw.githubusercontent.com/shpz/AttackArea/master/wechat.png)
+
+![image](https://raw.githubusercontent.com/shpz/AttackArea/master/alipay.png)
 
 # AttackArea
 一个基于 OpenGL 和 Creator 的攻击范围绘制Demo。
