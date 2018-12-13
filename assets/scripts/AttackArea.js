@@ -4,24 +4,6 @@ var AreaType = cc.Enum({
     CIRCLE: 2,
 });
 
-var VertDefault = `
-
-attribute vec4 a_position;
-attribute vec2 a_texCoord;
-attribute vec4 a_color;
-
-varying vec2 v_texCoord;
-varying vec4 v_fragmentColor;
-
-void main()
-{
-    gl_Position = CC_PMatrix * a_position;
-    v_fragmentColor = a_color;
-    v_texCoord = a_texCoord;
-}
-
-`;
-
 cc.Class({
     extends: cc.Component,
 
@@ -30,11 +12,30 @@ cc.Class({
             type: AreaType,
             default: AreaType.SECTOR,
         },
+
         color: {
             default: cc.color(255, 0, 0),
         },
+
+        fragSector: {
+            default: null,
+            type: cc.Asset
+        },
+
+        fragCircle: {
+            default: null,
+            type: cc.Asset
+        },
+
+        vertDefault: {
+            default: null,
+            type: cc.Asset,
+        },
+
         saturation: 3,
+
         maxRadius: 100,
+
         minRadius: 80,
 
         sectorAngle: 45,
@@ -46,37 +47,45 @@ cc.Class({
 
         this.normalizedMaxRadius = this.maxRadius / this.node.width;
         this.normalizedMinRadius = this.minRadius / this.node.width;
-        this.normalizedColor = { 
-            x: this.color.r / 255, 
-            y: this.color.g / 255, 
-            z: this.color.b / 255 
+        this.normalizedColor = {
+            x: this.color.r / 255,
+            y: this.color.g / 255,
+            z: this.color.b / 255
         };
+
         this.realAngle = this.sectorAngle == 180 ? 179 / 2 : this.sectorAngle / 2;
 
-        this.vertStr = VertDefault;
-        this.fragStr = 'FragSector';
+        this.loadShaderString(
+            [
+                this.fragSector.nativeUrl,
+                this.fragCircle.nativeUrl,
+                this.vertDefault.nativeUrl,
+            ],
+            () => {
 
-        if (this.areaType == AreaType.SECTOR) {
+                if (this.areaType == AreaType.SECTOR) {
+                    this.shaderString = cc.loader.getRes(this.fragSector.nativeUrl);
+                }
+                else if (this.areaType == AreaType.CIRCLE) {
+                    this.shaderString = cc.loader.getRes(this.fragCircle.nativeUrl);
+                }
 
-        }
-        else if (this.areaType == AreaType.CIRCLE) {
-            this.fragStr = 'FragCircle';
-        }
+                this.setProgram();
+                this.updateArea();
 
-        this.loadShaderStr(this.fragStr, this.setProgram.bind(this));
+            }
+        );
     },
 
-    loadShaderStr(shaderName, callback) {
-        cc.loader.loadRes('shaders/' + shaderName, function (err, str) {
+    loadShaderString(assets, callback) {
+        cc.loader.load(assets, (err, resources) => {
             if (err) {
-                console.error('load fail, ', err);
+                console.warn('load fail, ', err);
                 return;
             }
 
-            this.fragStr = str;
-            callback();
-            this.updateArea();
-        }.bind(this));
+            callback && callback();
+        });
     },
 
     setProgram() {

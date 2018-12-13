@@ -3,7 +3,7 @@
     "__type__": "cc.SceneAsset",
     "_name": "",
     "_objFlags": 0,
-    "_rawFiles": null,
+    "_native": "",
     "scene": {
       "__id__": 1
     }
@@ -261,6 +261,15 @@
       "g": 189,
       "b": 255,
       "a": 255
+    },
+    "fragSector": {
+      "__uuid__": "7a084372-74eb-46be-bc1f-9047624bc563"
+    },
+    "fragCircle": {
+      "__uuid__": "7017a2a4-6381-4183-ab90-4c125cc3d3cb"
+    },
+    "vertDefault": {
+      "__uuid__": "fea55114-e32c-47b6-8c4f-9da7d4e1e5ab"
     },
     "saturation": 1,
     "maxRadius": 250,
