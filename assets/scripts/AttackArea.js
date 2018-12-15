@@ -64,11 +64,13 @@ cc.Class({
             () => {
 
                 if (this.areaType == AreaType.SECTOR) {
-                    this.shaderString = cc.loader.getRes(this.fragSector.nativeUrl);
+                    this.fragString = cc.loader.getRes(this.fragSector.nativeUrl);
                 }
                 else if (this.areaType == AreaType.CIRCLE) {
-                    this.shaderString = cc.loader.getRes(this.fragCircle.nativeUrl);
+                    this.fragString = cc.loader.getRes(this.fragCircle.nativeUrl);
                 }
+
+                this.vertString = cc.loader.getRes(this.vertDefault.nativeUrl);
 
                 this.setProgram();
                 this.updateArea();
@@ -90,8 +92,8 @@ cc.Class({
 
     setProgram() {
         this.program = new cc.GLProgram();
-        var vert = this.vertStr;
-        var frag = this.fragStr;
+        var vert = this.vertString;
+        var frag = this.fragString;
 
         if (cc.sys.isNative) {
             this.program.initWithString(vert, frag);

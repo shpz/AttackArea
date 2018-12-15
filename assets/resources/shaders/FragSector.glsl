@@ -55,8 +55,8 @@ bool checkRay (vec4 ray) {
     vec2 segment_end = vec2(segment.z, segment.w);
     vec2 segment_delta = vec2(segment_end.x - segment_start.x, segment_end.y - segment_start.y);
 
-    float ray_mold = sqrt(ray_delta.x * ray_delta.x + ray_delta.y * ray_delta.y);
-    float segment_mold = sqrt(segment_delta.x * segment_delta.x + segment_delta.y * segment_delta.y);
+    float ray_mold = sqrt(ray_delta.x * ray_delta.x + ray_delta.y * ray_delta.y);                       // 0.57
+    float segment_mold = sqrt(segment_delta.x * segment_delta.x + segment_delta.y * segment_delta.y);   // 0.4
     
     if (((ray_delta.x / ray_mold) == (segment_delta.x / segment_mold)) && ((ray_delta.y / ray_mold) == (segment_delta.y / segment_mold))) {
         return false;
