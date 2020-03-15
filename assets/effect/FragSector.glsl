@@ -37,7 +37,7 @@ void makeCircle (out vec4 fragColor, in vec2 fragCoord) {
 	float mold = length(position);
     float angle = abs(calulateAngle(position, forward));
 
-	if (abs(mold) > maxRadius || abs(mold) < minRadius || angle > sectorAngle) {
+	if (abs(mold) > maxRadius || abs(mold) < minRadius || angle > sectorAngle || checkRay(vec4(0.5, 0.5, uv.x, uv.y))) { 
         discard;
     }
     else {
@@ -46,51 +46,26 @@ void makeCircle (out vec4 fragColor, in vec2 fragCoord) {
 }
 
 bool checkRay (vec4 ray) {
-    vec4 segment = vec4(0.0, 0.2, 0.4, 0.2);
-    vec2 ray_start = vec2(ray.x, ray.y);
-    vec2 ray_end = vec2(ray.z, ray.w);
-    vec2 ray_delta = vec2(ray_end.x - ray_start.x, ray_end.y - ray_start.y);
+    vec2 a1 = vec2(ray.x, ray.y);
+    vec2 a2 = vec2(ray.z, ray.w);
 
-    vec2 segment_start = vec2(segment.x, segment.y);
-    vec2 segment_end = vec2(segment.z, segment.w);
-    vec2 segment_delta = vec2(segment_end.x - segment_start.x, segment_end.y - segment_start.y);
+    vec2 b1 = vec2(0.0, 0.3);
+    vec2 b2 = vec2(1.0, 0.3);
 
-    float ray_mold = sqrt(ray_delta.x * ray_delta.x + ray_delta.y * ray_delta.y);                       // 0.57
-    float segment_mold = sqrt(segment_delta.x * segment_delta.x + segment_delta.y * segment_delta.y);   // 0.4
-    
-    if (((ray_delta.x / ray_mold) == (segment_delta.x / segment_mold)) && ((ray_delta.y / ray_mold) == (segment_delta.y / segment_mold))) {
-        return false;
+    float ua_t = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x);
+    float ub_t = (a2.x - a1.x) * (a1.y - b1.y) - (a2.y - a1.y) * (a1.x - b1.x);
+    float u_b  = (b2.y - b1.y) * (a2.x - a1.x) - (b2.x - b1.x) * (a2.y - a1.y);
+
+    if ( u_b != 0.0 ) {
+        float ua = ua_t / u_b;
+        float ub = ub_t / u_b;
+
+        if ( 0.0 <= ua && ua <= 1.0 && 0.0 <= ub && ub <= 1.0 ) {
+            return true;
+        }
     }
 
-    // var T2 = (r_dx*(s_py-r_py) + r_dy*(r_px-s_px))/(s_dx*r_dy - s_dy*r_dx);
-	// var T1 = (s_px+s_dx*T2-r_px)/r_dx;
-
-	// if(T1<0) return null;
-	// if(T2<0 || T2>1) return null;
-
-	// Return the POINT OF INTERSECTION
-	// return {
-	// 	x: r_px+r_dx*T1,
-	// 	y: r_py+r_dy*T1,
-	// 	param: T1
-	// };
-
-    float T2 = (ray_delta.x * (segment_start.y - ray_start.y) + ray_delta.y * (ray_start.x - segment_start.x)) / (segment_delta.x * ray_delta.y - segment_delta.y * ray_delta.x);
-    float T1 = (segment_start.x + segment_delta.x * T2 - ray_start.x) / ray_delta.x;
-
-    // if ((step(T1, 0.0) * step(T2, 0.0) * step(1.0 - T2, 0.0)) < 1.0) {
-    //     return false;
-    // }
-
-    if (T1 < 0.0) {
-        return false;
-    }
-
-    if (T2 < 0.0 || T2 > 1.0) {
-        return false;
-    }
-
-    return true;
+    return false;
 }
 
 // bool isInRect (in vec2 pInUV) {

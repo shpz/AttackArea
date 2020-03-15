@@ -1,12 +1,18 @@
 {
-  "ver": "2.0.0",
+  "ver": "2.3.4",
   "uuid": "a247c2ec-6d0f-4d56-ae65-a39c980e726d",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 220,
+  "height": 220,
+  "platformSettings": {},
   "subMetas": {
     "joystickBg": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "b74811b3-abfa-4fa9-a3c0-948e45e85566",
       "rawTextureUuid": "a247c2ec-6d0f-4d56-ae65-a39c980e726d",
       "trimType": "auto",
