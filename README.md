@@ -24,4 +24,7 @@
 
 ![image](http://forum.cocos.com/uploads/default/original/3X/a/7/a78630ee76fb4b57c2f8fe2a3ad379ece325ac62.gif)
 
+2020.03.16
+完成初步的 Cocos Effect 修改，基于 Cocos Creator 2.3.1。
+
 作者：我是一只傻狍子（shpz）
