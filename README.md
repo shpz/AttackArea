@@ -1,6 +1,3 @@
-# 支持我
-
-![image](https://github.com/shpz/AttackArea/blob/master/2AF460741A4A4ED737FBA59267614D7C.png?raw=true)
 
 # AttackArea
 一个基于 OpenGL 和 Creator 的攻击范围绘制Demo。
