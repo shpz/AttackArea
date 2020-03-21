@@ -20,6 +20,8 @@ CCEffect %{
         maxRadius: { value: 0.5 }
         sectorAngle: { value: 90.0 }
         saturation: { value: 1.0 }
+        screenSize: { value: [0.0, 0.0] }
+        center: { value: [0.0, 0.0] }
         forward: { value: [0.0, 0.0, 0.0, 0.0] }
         areaColor: { value: [1.0, 1.0, 1.0, 1.0], editor: { type: color } }
 }%
@@ -77,6 +79,9 @@ CCProgram fs %{
     vec4 world2;
     vec4 world3;
     vec4 world4;
+
+    vec2 screenSize;
+    vec2 center;
   };
 
   // 返回角度
@@ -89,22 +94,22 @@ CCProgram fs %{
       return angle;
   }
 
-  bool checkRay (vec4 ray) {
+  bool collisionTest (vec4 world) {
       // 线段A
-      vec2 a1 = vec2(ray.x, ray.y);
-      vec2 a2 = vec2(ray.z, ray.w);
+      vec2 a1 = vec2(0.0, 0.0);
+      vec2 a2 = vec2(gl_FragCoord.x - 0.5 - center.x, gl_FragCoord.y - 0.5 - center.y);
 
       // world1
-      vec2 b1 = vec2(0.3, 0.2);
-      vec2 b2 = vec2(0.7, 0.2);
+      vec2 b1 = vec2(world.x - center.x, world.y - center.y);
+      vec2 b2 = vec2(world.z - center.x, world.w - center.y);
 
       float ua_t = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x);
       float ub_t = (a2.x - a1.x) * (a1.y - b1.y) - (a2.y - a1.y) * (a1.x - b1.x);
-      float u_b  = (b2.y - b1.y) * (a2.x - a1.x) - (b2.x - b1.x) * (a2.y - a1.y);
+      float D  = (b2.y - b1.y) * (a2.x - a1.x) - (b2.x - b1.x) * (a2.y - a1.y);
 
-      if ( u_b != 0.0 ) {
-          float ua = ua_t / u_b;
-          float ub = ub_t / u_b;
+      if ( D != 0.0 ) {
+          float ua = ua_t / D;
+          float ub = ub_t / D;
 
           if ( 0.0 <= ua && ua <= 1.0 && 0.0 <= ub && ub <= 1.0 ) {
               return true;
@@ -125,10 +130,19 @@ CCProgram fs %{
     float mold = length(position);
     float angle = abs(calulateAngle(position, forward.xy));
 
-    if (abs(mold) > maxRadius || abs(mold) < minRadius || angle > sectorAngle / 2.0 || checkRay(vec4(0.5, 0.5, uv.x, uv.y))) { 
+    if (
+        abs(mold) > maxRadius 
+        || abs(mold) < minRadius 
+        || angle > sectorAngle / 2.0
+        || collisionTest(world1)
+        || collisionTest(world2)
+        || collisionTest(world3)
+        || collisionTest(world4)
+      ) { 
         discard;
     }
     else {
+        
         gl_FragColor = vec4(areaColor.rgb, (mold - minRadius) / (1.0 - minRadius) * saturation);
     }
   }
