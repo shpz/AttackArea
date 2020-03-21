@@ -25,7 +25,8 @@
           "z": 0,
           "w": 0
         },
-        "sectorAngle": 90
+        "sectorAngle": 90,
+        "minRadius": 0
       }
     }
   }
